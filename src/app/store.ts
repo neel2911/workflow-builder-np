@@ -1,9 +1,11 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { workflowBuilderReducer } from "../features/workflowBuilder";
+import { homeReducer } from "../features/home";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    workFlowBuilder: workflowBuilderReducer,
+    home: homeReducer,
   },
 });
 

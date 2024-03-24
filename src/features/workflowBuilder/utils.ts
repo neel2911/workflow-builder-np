@@ -1,0 +1,1 @@
+export const DND_DATA_TRANSFER = "application/reactflow"
