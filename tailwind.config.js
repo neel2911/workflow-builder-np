@@ -7,7 +7,9 @@ module.exports = {
         background: "#1B192B",
         text: "#f8f8f2",
         border: "#333154",
-        card: '#333154'
+        card: "#333154",
+        previewBackground: "#4caf5030",
+        previewBorder: "#4caf50",
       },
     },
   },

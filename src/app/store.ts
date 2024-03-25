@@ -1,11 +1,9 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { workflowBuilderReducer } from "../features/workflowBuilder";
-import { homeReducer } from "../features/home";
 
 export const store = configureStore({
   reducer: {
     workFlowBuilder: workflowBuilderReducer,
-    home: homeReducer,
   },
 });
 

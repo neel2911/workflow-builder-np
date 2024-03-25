@@ -1,13 +1,48 @@
 import { ArrowLeft } from "lucide-react";
 import { SaveModal } from "./SaveModal";
 import { useCallback, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { OnCloseType } from "@/types";
+import {
+  createWorkflow,
+  getCurrentWorkflowSelectors,
+  updateWorkflow,
+} from "../../workflowBuilderSlice";
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 
-export function Title() {
+export function Title(props: { id: number; name: string }) {
+  const dispatch = useAppDispatch();
+  const currentWorkflow = useAppSelector(getCurrentWorkflowSelectors);
   const [isOpen, setIsOpen] = useState(false);
-  const onClose = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+  const navigate = useNavigate();
+  const onClose = useCallback(
+    (params: Parameters<OnCloseType>[0]) => {
+      const { type, data } = params;
+      setIsOpen(false);
+      if (type === "save" && currentWorkflow) {
+        if (data?.id === 0) {
+          console.log("add");
+          dispatch(
+            createWorkflow({ ...currentWorkflow, id: data.id, name: data.name })
+          );
+        } else {
+          dispatch(
+            updateWorkflow({
+              id: data.id,
+              data: { ...currentWorkflow, name: data.name },
+            })
+          );
+        }
+        navigate("/");
+      }
+    },
+    [currentWorkflow, dispatch, navigate]
+  );
+
+  if (!currentWorkflow) {
+    return <></>;
+  }
+
   return (
     <>
       <div className="bg-header border-b border-border px-4 h-10 flex justify-between items-center">
@@ -15,7 +50,7 @@ export function Title() {
           <Link to="/">
             <ArrowLeft />
           </Link>
-          <span className="ml-4">New Workflow</span>
+          <span className="ml-4">{currentWorkflow.name}</span>
         </div>
         <button
           className="rounded border border-border p-1 px-3 text-xs font-bold hover:bg-border"
@@ -24,7 +59,13 @@ export function Title() {
           Save
         </button>
       </div>
-      {isOpen && <SaveModal onClose={onClose} />}
+      {isOpen && (
+        <SaveModal
+          id={currentWorkflow.id}
+          workflowName={currentWorkflow.name}
+          onClose={onClose}
+        />
+      )}
     </>
   );
 }

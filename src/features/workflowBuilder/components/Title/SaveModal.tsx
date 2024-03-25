@@ -1,5 +1,13 @@
-export function SaveModal(props: { onClose: () => void }) {
-  const { onClose } = props;
+import { useState } from "react";
+import { OnCloseType } from "@/types";
+
+export function SaveModal(props: {
+  id: number;
+  workflowName: string;
+  onClose: OnCloseType;
+}) {
+  const { id, workflowName, onClose } = props;
+  const [name, setName] = useState<string>(id !== 0 ? workflowName : "");
   return (
     <div
       id="modal"
@@ -10,7 +18,7 @@ export function SaveModal(props: { onClose: () => void }) {
           <h3 className="font-semibold text-xl">Save Workflow</h3>
           <span
             className="modal-close cursor-pointer border border-border rounded-md px-4 py-2 hover:bg-border"
-            onClick={() => onClose()}
+            onClick={() => onClose({ type: "close" })}
           >
             ×
           </span>
@@ -20,7 +28,9 @@ export function SaveModal(props: { onClose: () => void }) {
             <label className="mb-4">Workflow Name</label>
             <input
               type="text"
+              value={name}
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-2"
+              onChange={(e) => setName(e?.target?.value)}
             />
           </div>
         </div>
@@ -28,13 +38,13 @@ export function SaveModal(props: { onClose: () => void }) {
           <div>
             <button
               className="text-sm bg-border border border-border rounded-md px-4 py-2 mr-4 hover:bg-transparent"
-              onClick={() => onClose()}
+              onClick={() => onClose({ type: "save", data: { id, name } })}
             >
               Save
             </button>
             <button
               className="modal-close text-sm border border-border rounded-md px-4 py-2 hover:bg-border"
-              onClick={() => onClose()}
+              onClick={() => onClose({ type: "cancel" })}
             >
               Cancel
             </button>

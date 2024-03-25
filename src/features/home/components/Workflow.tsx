@@ -1,7 +1,9 @@
 import { WorkflowType } from "@/types";
 import { Link } from "react-router-dom";
 
-export function WorkflowCard(props: { data: WorkflowType }) {
+export function WorkflowCard(props: {
+  data: Pick<WorkflowType, "id" | "name">;
+}) {
   const {
     data: { id, name },
   } = props;
